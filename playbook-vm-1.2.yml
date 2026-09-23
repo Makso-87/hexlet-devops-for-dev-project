@@ -1,0 +1,9 @@
+- hosts: VM_1
+
+  tasks:
+    - name: uninstall git
+      ansible.builtin.apt:
+          name: git
+          state: absent
+          update_cache: true
+      become: true

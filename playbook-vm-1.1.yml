@@ -1,0 +1,9 @@
+- hosts: VM_1
+
+  tasks:
+    - name: install git
+      ansible.builtin.apt:
+          name: git
+          state: present
+          update_cache: true
+      become: true
