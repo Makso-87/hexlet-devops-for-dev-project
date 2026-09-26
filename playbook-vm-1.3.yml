@@ -1,0 +1,67 @@
+- hosts: vm_1
+
+  tasks:
+    - name: update apt
+      ansible.builtin.apt:
+        update_cache: yes
+      become: true
+      tags: packages
+
+    - name: install git
+      ansible.builtin.apt:
+        name: git
+        state: latest
+      become: true
+      tags: packages
+
+    - name: install make
+      ansible.builtin.apt:
+        name: make
+        state: latest
+      become: true
+      tags: packages
+
+    - name: install curl
+      ansible.builtin.apt:
+        name: curl
+        state: latest
+      become: true
+      tags: packages
+
+    - name: Add the users group 'starks'
+      ansible.builtin.group:
+        name: starks
+        state: present
+      become: true
+      tags: groups
+
+    - name: Add the users group 'lannisters'
+      ansible.builtin.group:
+        name: lannisters
+        state: present
+      become: true
+      tags: groups
+
+    - name: Add the user 'arya' with a group of 'starks'
+      ansible.builtin.user:
+        name: arya
+        comment: Arya Stark
+        group: starks
+      become: true
+      tags: users
+
+    - name: Add the user 'sansa' with a group of 'starks'
+      ansible.builtin.user:
+        name: sansa
+        comment: Sansa Stark
+        group: starks
+      become: true
+      tags: users
+
+    - name: Add the user 'tyrion' with a group of 'lannisters'
+      ansible.builtin.user:
+        name: Tyrion
+        comment: Tyrion Lannister
+        group: lannisters
+      become: true
+      tags: users

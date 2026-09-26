@@ -1,4 +1,4 @@
-- hosts: VM_1
+- hosts: vm_1
 
   tasks:
     - name: uninstall git
