@@ -1,0 +1,36 @@
+- hosts: vm_1
+
+  tasks:
+    - name:
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: copy index.html
+      ansible.builtin.copy:
+        src: ./index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: makso
+        group: makso
+        mode: '0744'
+      become: true
+
+    - name: copy nginx.conf
+      ansible.builtin.copy:
+        src: ./nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: makso
+        group: makso
+        mode: '0744'
+      notify:
+        - restart nginx
+      become: true
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      become: true
