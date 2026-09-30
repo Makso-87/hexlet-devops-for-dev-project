@@ -1,4 +1,4 @@
-- hosts: vm_1
+- hosts: vm_1, vm_2
   vars:
     nginx_port: 108
     root_dir: /usr/share/nginx/html
@@ -12,7 +12,7 @@
       become: true
 
     - name: copy index.html
-      ansible.builtin.copy:
+      ansible.builtin.template:
         src: ./index.html
         dest: "{{ root_dir }}/index.html"
         owner: makso
