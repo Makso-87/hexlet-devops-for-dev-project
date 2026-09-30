@@ -1,7 +1,4 @@
 - hosts: vm_1, vm_2
-  vars:
-    nginx_port: 108
-    root_dir: /usr/share/nginx/html
 
   tasks:
     - name:
