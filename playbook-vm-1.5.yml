@@ -1,0 +1,14 @@
+- hosts: vm_1
+
+  tasks:
+    - name: show params
+      ansible.builtin.debug:
+        msg: Объем ОЗУ {{ ansible_facts['memtotal_mb'] }} Мб. Название дистрибутива {{ ansible_facts['distribution'] }}
+
+    - name: install git
+      ansible.builtin.apt:
+        name: git
+        state: present
+        update_cache: true
+      become: true
+
