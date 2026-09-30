@@ -12,3 +12,6 @@ groups:
 
 users:
 	ansible-playbook playbook-vm-1.3.yml -i inventory.ini -t users
+
+handlers:
+	ansible-playbook playbook-vm-1.4.yml -i inventory.ini

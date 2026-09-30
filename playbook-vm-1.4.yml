@@ -1,4 +1,7 @@
 - hosts: vm_1
+  vars:
+    nginx_port: 108
+    root_dir: /usr/share/nginx/html
 
   tasks:
     - name:
@@ -11,14 +14,14 @@
     - name: copy index.html
       ansible.builtin.copy:
         src: ./index.html
-        dest: /usr/share/nginx/html/index.html
+        dest: "{{ root_dir }}/index.html"
         owner: makso
         group: makso
         mode: '0744'
       become: true
 
     - name: copy nginx.conf
-      ansible.builtin.copy:
+      ansible.builtin.template:
         src: ./nginx.conf
         dest: /etc/nginx/nginx.conf
         owner: makso
