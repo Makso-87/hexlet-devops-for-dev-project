@@ -29,7 +29,7 @@
       ansible.posix.authorized_key:
         user: "{{ item.name}}"
         state: present
-        key: "{{ lookup('file', './files/id_ed25519.pub') }}"
+        key: "{{ lookup('file', './files/ssh_keys/makso/id_rsa.pub') }}"
         manage_dir: false
       loop: "{{ users_list }}"
       become: true

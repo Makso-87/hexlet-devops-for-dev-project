@@ -1,0 +1,24 @@
+- hosts: servers
+  tasks:
+    - name: Создание пользователя deploy
+      ansible.builtin.user:
+        name: deploy
+        state: present
+        group: users
+      become: true
+
+    - name: Установка git на Debian"
+      ansible.builtin.apt:
+        name: git
+        state: present
+        update_cache: true
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+
+    - name: Установка git на RedHat
+      ansible.builtin.dnf:
+        name: git
+        state: present
+        update_cache: true
+      when: ansible_facts['os_family'] == "RedHat"
+      become: true
