@@ -1,3 +1,7 @@
 # Общие переменные группы хостов
 nginx_port: 108
 root_dir: /usr/share/nginx/html
+users_list:
+  - { name: jaime, group: sudo }
+  - { name: sansa, group: users }
+  - { name: robert, group: users }

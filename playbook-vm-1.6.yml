@@ -1,0 +1,35 @@
+- hosts: vm_2
+  tasks:
+    - name: install git
+      ansible.builtin.apt:
+        name: git
+        state: present
+        update_cache: true
+      become: true
+
+    - name: Создание пользователей
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        state: present
+        group: "{{ item.group }}"
+      loop: "{{ users_list }}"
+      become: true
+
+    - name: Создание конфигурационного файла git
+      ansible.builtin.template:
+        src: ./.gitconfig
+        dest: /home/{{ item.name}}/.gitconfig
+        owner: "{{ item.name }}"
+        group: "{{ item.group }}"
+        mode: '0744'
+      loop: "{{ users_list }}"
+      become: true
+
+    - name: Загрузка SSH ключей пользователям
+      ansible.posix.authorized_key:
+        user: "{{ item.name}}"
+        state: present
+        key: "{{ lookup('file', './files/id_ed25519.pub') }}"
+        manage_dir: false
+      loop: "{{ users_list }}"
+      become: true
