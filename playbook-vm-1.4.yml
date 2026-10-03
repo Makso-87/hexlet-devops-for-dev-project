@@ -6,11 +6,20 @@
         name: nginx
         state: present
         update_cache: yes
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+
+    - name:
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+        update_cache: yes
+      when: ansible_facts['os_family'] == "RedHat"
       become: true
 
     - name: copy index.html
       ansible.builtin.template:
-        src: ./index.html
+        src: ./files/html/index.html
         dest: "{{ root_dir }}/index.html"
         owner: makso
         group: makso
