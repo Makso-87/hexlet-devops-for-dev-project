@@ -1,0 +1,38 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for init_vm_base
+- name: Создание пользователей
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: present
+    group: "{{ item.group }}"
+    password: "{{ item.password }}"
+  loop: "{{ users_list }}"
+  become: true
+
+- name: Загрузка SSH ключей пользователям
+  ansible.posix.authorized_key:
+    user: "{{ item.name}}"
+    state: present
+    key: "{{ lookup('file', item.keyPath) }}"
+    manage_dir: false
+  loop: "{{ users_list }}"
+  become: true
+
+- name: install Git
+  ansible.builtin.apt:
+      name: git
+      state: present
+      update_cache: true
+  become: true
+
+- name: Создание конфигурационного файла git для простых пользователей
+  ansible.builtin.template:
+    src: ./.gitconfig
+    dest: /home/{{ item.name }}/.gitconfig
+    owner: "{{ item.name }}"
+    group: "{{ item.group }}"
+    mode: '0744'
+  loop: "{{ users_list }}"
+  when: item.name != 'root'
+  become: true

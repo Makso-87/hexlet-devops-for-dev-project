@@ -1,23 +1,5 @@
-- hosts: vms
-  vars:
-    users:
-      - { name: root, path: './files/ssh_keys/root/id_rsa.pub' }
-
-  tasks:
-    - name: Первый вход по SSH
-      ansible.posix.authorized_key:
-        user: "{{ item.name }}"
-        state: present
-        key: "{{ lookup('file', item.path) }}"
-        manage_dir: false
-      loop: "{{ users }}"
-      become: true
-
-    - name: Загрузка SSH ключей пользователям
-      ansible.posix.authorized_key:
-        user: "{{ item.name }}"
-        state: present
-        key: "{{ lookup('file', item.path) }}"
-        manage_dir: false
-      loop: "{{ users }}"
-      become: true
+- hosts: vm_2
+  roles:
+    - role: init_vm_base
+      users_list:
+        - { name: barso, group: users, keyPath: './files/ssh_keys/makso/id_rsa.pub', password: '123456' }
