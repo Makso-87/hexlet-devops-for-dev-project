@@ -7,7 +7,7 @@
     state: present
     group: "{{ item.group }}"
     password: "{{ item.password }}"
-  loop: "{{ users_list }}"
+  loop: "{{ list_of_users }}"
   become: true
 
 - name: Загрузка SSH ключей пользователям
@@ -16,7 +16,7 @@
     state: present
     key: "{{ lookup('file', item.keyPath) }}"
     manage_dir: false
-  loop: "{{ users_list }}"
+  loop: "{{ list_of_users }}"
   become: true
 
 - name: install Git
@@ -33,6 +33,6 @@
     owner: "{{ item.name }}"
     group: "{{ item.group }}"
     mode: '0744'
-  loop: "{{ users_list }}"
+  loop: "{{ list_of_users }}"
   when: item.name != 'root'
   become: true

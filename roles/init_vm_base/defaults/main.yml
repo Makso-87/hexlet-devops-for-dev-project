@@ -2,4 +2,5 @@
 ---
 # defaults file for init_vm_base
 # The item of users looks like { name: userName, group: userGroup, keyPath: pathToSshKeyOfUser }
-users_list: []
+list_of_users:
+  - { name: makso, group: users, keyPath: './files/ssh_keys/makso/id_rsa.pub', password: '123456' }
