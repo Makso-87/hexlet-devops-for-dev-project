@@ -1,0 +1,9 @@
+- hosts: vm_2
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_install_compose: true
+
+    - role: jdauphant.ssl-certs
+      ssl_certs_local_privkey_path: '/etc/ssl/fullchain.pem;'
+      ssl_certs_local_cert_path: '/etc/ssl/privkey.pem;'
