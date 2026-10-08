@@ -1,0 +1,34 @@
+- hosts: vm_2
+  tasks:
+    - name: Install Git
+      ansible.builtin.apt:
+        name: git
+        state: present
+      become: true
+      tags: packages
+
+    - name: Install Make
+      ansible.builtin.apt:
+        name: make
+        state: present
+      become: true
+      tags: packages
+
+    - name: Create users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        group: "{{ item.group }}"
+        state: present
+      loop: "{{ users_list }}"
+      become: true
+      tags: users
+
+    - name: Upload ssh keys
+      ansible.posix.authorized_key:
+        key: "{{ lookup('file', './files/ssh_keys/makso/id_rsa.pub') }}"
+        path: '/home/{{ item.name }}/.ssh/authorized_keys'
+        user: "{{ item.name }}"
+        state: present
+      loop: "{{ users_list }}"
+      become: true
+      tags: ssh_keys
