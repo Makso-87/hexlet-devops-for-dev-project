@@ -1,0 +1,41 @@
+- hosts: vm_2
+  gather_facts: false
+  roles:
+    - role: install_nodejs_24
+  vars:
+    need_remove_node: false
+
+  tasks:
+    - name: Удаление node.js
+      ansible.builtin.apt:
+        name: nodejs
+        state: absent
+        update_cache: true
+      when: need_remove_node == true
+      become: true
+
+    - name: Создание папки приложения
+      ansible.builtin.file:
+        path: /srv/mini_app
+        state: directory
+        owner: "{{ active_user }}"
+      become: true
+      tags: copy-app
+
+    - name: Copy mini_app files
+      ansible.builtin.template:
+        src: "{{ item }}"
+        dest: "/srv/mini_app/{{ item | basename }}"
+      loop:  "{{ query('ansible.builtin.fileglob', './mini_app/*') + ['./mini_app/.env'] }}"
+      become: true
+      tags: copy-app
+
+    - name: Run mini-app
+      ansible.builtin.shell:
+        chdir: /srv/mini_app/
+        cmd: node server.js
+      become: true
+      async: 10
+      poll: 0
+      tags: run-app
+

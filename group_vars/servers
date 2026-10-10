@@ -5,6 +5,8 @@ users_list:
   - { name: jaime, group: sudo }
   - { name: sansa, group: users }
   - { name: robert, group: users }
+  - { name: bilbo, group: users }
+  - { name: frodo, group: users }
 board_name: "{{ ansible_facts['board_name'] }}"
 message: "This is server {{ board_name }}"
 current_date: "{{ ansible_facts['date_time']['date'] }}, {{ ansible_facts['date_time']['time'] }}"
